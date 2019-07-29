@@ -45,14 +45,18 @@ export default class ViewCountApplicationCustomizer extends BaseApplicationCusto
 
     Dialog.alert(`Hello from ${strings.Title}:\n\n${message}`);
 
-    const element: React.ReactElement<IButtonProps> = React.createElement(
-      ViewCount
-    );
+    const element = document.createElement('div');
+    element.classList.toggle("ms-OverflowSet-item");
+    element.classList.toggle("item-279");
 
+    document.querySelector(".ms-OverflowSet.ms-CommandBar-primaryCommand").appendChild(element);
     ReactDOM.render(
-      element,
-      document.querySelector(".ms-OverflowSet.ms-CommandBar-primaryCommand")
+      React.createElement(
+        ViewCount
+      ),
+      element
     );
+    console.log(document.querySelector(".ms-OverflowSet.ms-CommandBar-primaryCommand"));
 
     return Promise.resolve();
     // Log.info(LOG_SOURCE, `Initialized ${strings.Title}`);

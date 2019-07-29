@@ -9,10 +9,19 @@
           "manifest": "./src/extensions/viewCount/ViewCountApplicationCustomizer.manifest.json"
         }
       ]
+    },
+    "hello-world-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/helloWorld/HelloWorldWebPart.js",
+          "manifest": "./src/webparts/helloWorld/HelloWorldWebPart.manifest.json"
+        }
+      ]
     }
   },
   "externals": {},
   "localizedResources": {
-    "ViewCountApplicationCustomizerStrings": "lib/extensions/viewCount/loc/{locale}.js"
+    "ViewCountApplicationCustomizerStrings": "lib/extensions/viewCount/loc/{locale}.js",
+    "HelloWorldWebPartStrings": "lib/webparts/helloWorld/loc/{locale}.js"
   }
 }
