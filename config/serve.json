@@ -1,0 +1,35 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/core-build/serve.schema.json",
+  "port": 4321,
+  "https": true,
+  "serveConfigurations": {
+    "default": {
+      "pageUrl": "https://agarb.sharepoint.com/sites/dev2/SitePages/Home.aspx",
+      "customActions": {
+        "b54969ee-5581-4ad9-a109-74a79ac4a580": {
+          "location": "ClientSideExtension.ApplicationCustomizer",
+          "properties": {
+            "testMessage": "Test message",
+            "Top": "Top area of the page",
+            "Bottom": "Bottom area of the page",
+            "View": 0
+          }
+        }
+      }
+    },
+    "viewCount": {
+      "pageUrl": "https://agarb.sharepoint.com/sites/dev2/SitePages/Home.aspx",
+      "customActions": {
+        "b54969ee-5581-4ad9-a109-74a79ac4a580": {
+          "location": "ClientSideExtension.ApplicationCustomizer",
+          "properties": {
+            "testMessage": "Test message",
+            "Top": "Top area of the page",
+            "Bottom": "Bottom area of the page",
+            "View": 0
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "view-count-application-customizer": {
+      "components": [
+        {
+          "entrypoint": "./lib/extensions/viewCount/ViewCountApplicationCustomizer.js",
+          "manifest": "./src/extensions/viewCount/ViewCountApplicationCustomizer.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "ViewCountApplicationCustomizerStrings": "lib/extensions/viewCount/loc/{locale}.js"
+  }
+}
