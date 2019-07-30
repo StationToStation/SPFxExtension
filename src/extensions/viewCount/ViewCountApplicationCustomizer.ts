@@ -9,30 +9,32 @@ import ViewCount from "./components/ViewCount";
 import * as strings from "ViewCountApplicationCustomizerStrings";
 import View from "./Iview";
 import { SPHttpClient } from "@microsoft/sp-http";
+import { array } from "prop-types";
 
 const LOG_SOURCE: string = "ViewCountApplicationCustomizer";
 
 export interface IViewCountApplicationCustomizerProperties {}
-
 export default class ViewCountApplicationCustomizer extends BaseApplicationCustomizer<
   IViewCountApplicationCustomizerProperties
 > {
   @override
   public onInit(): Promise<void> {
     Log.info(LOG_SOURCE, `Initialized ${strings.Title}`);
-    console.log(this.context.pageContext.web.absoluteUrl);
+    console.log(window.location.href);
     this.loadViews()
-      .then(views => this.incrementViews(views))
-      .then(views => this.createControlButton(views));
+      .then((view: View) => this.incrementViews(view))
+      .then((views: number) => this.createControlButton(views));
     return Promise.resolve();
   }
 
-  private loadViews(): Promise<View[]> {
-    return new Promise<View[]>(
-      (resolve: (views: View[]) => void, reject: (error: any) => void) => {
+  private loadViews(): Promise<View> {
+    return new Promise<View>(
+      (resolve: (views: View) => void, reject: (error: any) => void) => {
         this.context.spHttpClient
           .get(
-            `https://agarb.sharepoint.com/sites/dev2/_api/web/lists/GetByTitle('ViewCountList')/Items?$select=Title,Views,Id`,
+            `https://agarb.sharepoint.com/sites/dev2/_api/web/lists/GetByTitle('ViewCountList')/Items?$select=Views,Id,Title&$filter=Title eq '${escape(
+              window.location.href
+            )}'`,
             SPHttpClient.configurations.v1,
             {
               headers: {
@@ -43,11 +45,11 @@ export default class ViewCountApplicationCustomizer extends BaseApplicationCusto
           )
           .then(response => response.json())
           .then(response => {
-            resolve(
-              response.value.map(view => {
-                return { page: view.Title, views: view.Views, id: view.Id };
-              })
-            );
+            resolve({
+              page: response.value[0].Title,
+              views: response.value[0].Views,
+              id: response.value[0].Id
+            });
           })
           .catch(error => {
             console.log(error);
@@ -57,22 +59,19 @@ export default class ViewCountApplicationCustomizer extends BaseApplicationCusto
     );
   }
 
-  private incrementViews(views: View[]): number {
-    let index = -1;
-    views.forEach((view, i) => {
-      if (view.page === this.context.pageContext.web.absoluteUrl) index = i;
-    });
-    if (index !== -1)
-      return this.updateItem(views[index].id, views[index].views + 1);
+  private incrementViews(view: View): number {
+    if (view.page === window.location.href)
+      return this.updateItem(view.id, view.views + 1);
     else return this.createItem();
   }
 
   private createItem(): number {
+    console.log("create");
     const body: string = JSON.stringify({
       __metadata: {
         type: "SP.Data.ViewCountListListItem"
       },
-      Title: this.context.pageContext.web.absoluteUrl,
+      Title: window.location.href,
       Views: 1
     });
     this.context.spHttpClient
@@ -93,6 +92,7 @@ export default class ViewCountApplicationCustomizer extends BaseApplicationCusto
   }
 
   private updateItem(index: string, views: number): number {
+    console.log("update");
     const body: string = JSON.stringify({
       __metadata: {
         type: "SP.Data.ViewCountListListItem"
@@ -119,13 +119,18 @@ export default class ViewCountApplicationCustomizer extends BaseApplicationCusto
   }
 
   private createControlButton(views: number) {
+    const container = document.querySelector(
+      ".ms-OverflowSet.ms-CommandBar-primaryCommand"
+    );
+    const classes = container.firstElementChild.classList;
+    let id: string;
+    Array.prototype.forEach.call(classes, className => {
+      if (className.indexOf("item-") !== -1) id = className.slice(4);
+    });
     const element = document.createElement("div");
     element.classList.toggle("ms-OverflowSet-item");
-    element.classList.toggle("item-279");
-
-    document
-      .querySelector(".ms-OverflowSet.ms-CommandBar-primaryCommand")
-      .appendChild(element);
+    element.classList.toggle("item" + id);
+    container.appendChild(element);
     ReactDOM.render(React.createElement(ViewCount, { views }), element);
   }
 }

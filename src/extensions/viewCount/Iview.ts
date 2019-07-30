@@ -1,4 +1,4 @@
-export default interface IView{
+export default interface IView {
   page: string;
   views: number;
   id: string;
