@@ -1,8 +1,5 @@
 import * as React from "react";
-import {
-  CommandBarButton,
-  IButtonProps
-} from "office-ui-fabric-react/lib/Button";
+import { CommandBarButton } from "office-ui-fabric-react/lib/Button";
 import Popup from "reactjs-popup";
 
 interface IViewCountProps {
@@ -10,9 +7,17 @@ interface IViewCountProps {
 }
 
 export default class ViewCount extends React.Component<IViewCountProps, {}> {
+  public popupText = () => {
+    console.log(this.props.views);
+    if (this.props.views > 1)
+      return "This page has been visited " + this.props.views + " times.";
+    return "This page has never been visited before";
+  };
+
   public render() {
     return (
-      <Popup contentStyle={{"width": "fit-content"}}
+      <Popup
+        contentStyle={{ width: "fit-content" }}
         trigger={
           <CommandBarButton
             className="full-height"
@@ -26,7 +31,7 @@ export default class ViewCount extends React.Component<IViewCountProps, {}> {
         on="hover"
       >
         <div className="card">
-          <div className="header">This page has been visited {this.props.views} times.</div>
+          <div className="header">{this.popupText()}</div>
         </div>
       </Popup>
     );
