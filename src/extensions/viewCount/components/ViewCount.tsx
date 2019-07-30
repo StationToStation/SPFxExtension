@@ -5,17 +5,11 @@ import {
 } from "office-ui-fabric-react/lib/Button";
 import Popup from "reactjs-popup";
 
-const Card = ({ title }) => (
-  <div className="card">
-    <div className="header">{title} position </div>
-    <div className="content">
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit autem
-      sapiente labore architecto exercitationem optio quod dolor cupiditate
-    </div>
-  </div>
-);
+interface IViewCountProps {
+  views: number;
+}
 
-export default class ViewCount extends React.Component<IButtonProps, {}> {
+export default class ViewCount extends React.Component<IViewCountProps, {}> {
   public render() {
     return (
       <Popup contentStyle={{"width": "fit-content"}}
@@ -24,16 +18,15 @@ export default class ViewCount extends React.Component<IButtonProps, {}> {
             className="full-height"
             data-automation-id="views-count"
             iconProps={{ iconName: "View" }}
-            text="Nastia Garbuz"
+            text={this.props.views.toString()}
             ariaLabel="Views count"
-            onMouseOver={() => console.log("mouse over")}
           />
         }
         position="top center"
         on="hover"
       >
         <div className="card">
-          <div className="header">Hi there</div>
+          <div className="header">This page has been visited {this.props.views} times.</div>
         </div>
       </Popup>
     );
