@@ -43,11 +43,6 @@ export default class ViewCountApplicationCustomizer extends BaseApplicationCusto
           )
           .then(response => response.json())
           .then(response => {
-            console.log(
-              response.value.map(view => {
-                return { page: view.Title, views: view.Views, id: view.Id };
-              })
-            );
             resolve(
               response.value.map(view => {
                 return { page: view.Title, views: view.Views, id: view.Id };
@@ -67,8 +62,8 @@ export default class ViewCountApplicationCustomizer extends BaseApplicationCusto
     views.forEach((view, i) => {
       if (view.page === this.context.pageContext.web.absoluteUrl) index = i;
     });
-    console.log(index);
-    if (index !== -1) return this.updateItem(views[index].id, views[index].views + 1);
+    if (index !== -1)
+      return this.updateItem(views[index].id, views[index].views + 1);
     else return this.createItem();
   }
 
@@ -120,7 +115,7 @@ export default class ViewCountApplicationCustomizer extends BaseApplicationCusto
         }
       )
       .catch(error => console.error(error));
-      return views;
+    return views;
   }
 
   private createControlButton(views: number) {

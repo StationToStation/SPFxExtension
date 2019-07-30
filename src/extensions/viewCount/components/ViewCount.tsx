@@ -8,7 +8,6 @@ interface IViewCountProps {
 
 export default class ViewCount extends React.Component<IViewCountProps, {}> {
   public popupText = () => {
-    console.log(this.props.views);
     if (this.props.views > 1)
       return "This page has been visited " + this.props.views + " times.";
     return "This page has never been visited before";
