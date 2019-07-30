@@ -45,11 +45,15 @@ export default class ViewCountApplicationCustomizer extends BaseApplicationCusto
           )
           .then(response => response.json())
           .then(response => {
-            resolve({
-              page: response.value[0].Title,
-              views: response.value[0].Views,
-              id: response.value[0].Id
-            });
+            if (response.value[0])
+              resolve({
+                page: response.value[0].Title,
+                views: response.value[0].Views,
+                id: response.value[0].Id
+              });
+            else resolve({page: "",
+              views: undefined,
+              id: undefined})
           })
           .catch(error => {
             console.log(error);
