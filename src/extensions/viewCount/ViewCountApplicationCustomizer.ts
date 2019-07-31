@@ -16,7 +16,10 @@ export interface IViewCountApplicationCustomizerProperties {}
 export default class ViewCountApplicationCustomizer extends BaseApplicationCustomizer<
   IViewCountApplicationCustomizerProperties
 > {
-  private pageURL = window.location.href;
+  private pageURL =
+    window.location.href.length < 100
+      ? window.location.href
+      : window.location.href.slice(0, window.location.href.indexOf('?'));
   @override
   public onInit(): Promise<void> {
     Log.info(LOG_SOURCE, `Initialized ${strings.Title}`);
@@ -126,11 +129,14 @@ export default class ViewCountApplicationCustomizer extends BaseApplicationCusto
       (!container || !container.querySelector(".ms-OverflowSet-item")) &&
       attempt < 10
     ) {
-      setTimeout(this.createControlButton(views, attempt + 1), 500);
+      setTimeout(
+        (views, attempt) => this.createControlButton(views, attempt + 1),
+        1000
+      );
       return;
     }
     if (attempt === 10) {
-      console.log(
+      console.error(
         `error(garbuz-spfx-extension-client-side-solution): can't find container's .ms-OverflowSet.ms-CommandBar-primaryCommand child`
       );
       id = "-320";
@@ -141,12 +147,10 @@ export default class ViewCountApplicationCustomizer extends BaseApplicationCusto
       });
     }
     if (!container) {
-      console.log(
+      console.error(
         `error(garbuz-spfx-extension-client-side-solution): can't find container .ms-OverflowSet.ms-CommandBar-primaryCommand`
       );
-      container = document.querySelector(
-        "ms-CommandBar"
-      );
+      container = document.querySelector("ms-CommandBar");
       if (!container) return;
     }
     const element = document.createElement("div");
