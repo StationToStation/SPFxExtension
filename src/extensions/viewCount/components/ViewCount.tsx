@@ -11,7 +11,7 @@ export default class ViewCount extends React.Component<IViewCountProps, {}> {
     if (this.props.views > 1)
       return "This page has been visited " + this.props.views + " times.";
     return "This page has never been visited before";
-  };
+  }
 
   public render() {
     return (
@@ -19,7 +19,6 @@ export default class ViewCount extends React.Component<IViewCountProps, {}> {
         contentStyle={{ width: "fit-content" }}
         trigger={
           <CommandBarButton
-            className="full-height"
             data-automation-id="views-count"
             iconProps={{ iconName: "View" }}
             text={this.props.views.toString()}
