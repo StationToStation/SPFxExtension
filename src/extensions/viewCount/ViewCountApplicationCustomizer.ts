@@ -16,13 +16,16 @@ export interface IViewCountApplicationCustomizerProperties {}
 export default class ViewCountApplicationCustomizer extends BaseApplicationCustomizer<
   IViewCountApplicationCustomizerProperties
 > {
-  private pageURL = window.location.href.slice(0, window.location.href.indexOf('?'));
+  private pageURL = window.location.href.slice(
+    0,
+    window.location.href.indexOf("?")
+  );
   @override
   public onInit(): Promise<void> {
     Log.info(LOG_SOURCE, `Initialized ${strings.Title}`);
     this.loadViews()
       .then((view: View) => this.incrementViews(view))
-      .then((views: number) => this.createControlButton(views));
+      .then((views: number) => this.createControlButton(views, 0));
     return Promise.resolve();
   }
 
@@ -117,19 +120,40 @@ export default class ViewCountApplicationCustomizer extends BaseApplicationCusto
     return views;
   }
 
-  private createControlButton(views: number) {
-    const container = document.querySelector(
+  private createControlButton(views: number, attempt: number) {
+    console.log("attempt: " + attempt);
+    let container = document.querySelector(
       ".ms-OverflowSet.ms-CommandBar-primaryCommand"
     );
-    if (!container.querySelector(".ms-OverflowSet-item")) {
-      setTimeout(this.createControlButton(views), 500);
+    let id: string;
+    if (
+      (!container || !container.querySelector(".ms-OverflowSet-item")) &&
+      attempt < 3
+    ) {
+      setTimeout(this.createControlButton(views, attempt + 1), 1000);
       return;
     }
-    const classes = container.querySelector(".ms-OverflowSet-item").classList;
-    let id: string;
-    Array.prototype.forEach.call(classes, className => {
-      if (className.indexOf("item-") !== -1) id = className.slice(4);
-    });
+    if (attempt === 3) {
+      console.log(
+        `error(garbuz-spfx-extension-client-side-solution): can't find container's .ms-OverflowSet.ms-CommandBar-primaryCommand child`
+      );
+      id = "-320";
+    } else {
+      console.log(container.querySelector(".ms-OverflowSet-item"));
+      const classes = container.querySelector(".ms-OverflowSet-item").classList;
+      Array.prototype.forEach.call(classes, className => {
+        if (className.indexOf("item-") !== -1) id = className.slice(4);
+      });
+    }
+    if (!container) {
+      console.log(
+        `error(garbuz-spfx-extension-client-side-solution): can't find container .ms-OverflowSet.ms-CommandBar-primaryCommand`
+      );
+      container = document.querySelector(
+        "ms-CommandBar"
+      );
+      if (!container) return;
+    }
     const element = document.createElement("div");
     element.classList.toggle("ms-OverflowSet-item");
     element.classList.toggle("item" + id);
