@@ -21,7 +21,7 @@ export default class ViewCount extends React.Component<IViewCountProps, {}> {
           <CommandBarButton
             data-automation-id="views-count"
             iconProps={{ iconName: "View" }}
-            text={this.props.views.toString()}
+            text={(this.props.views)?this.props.views.toString():'0'}
             ariaLabel="Views count"
           />
         }

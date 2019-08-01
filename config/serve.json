@@ -4,7 +4,7 @@
   "https": true,
   "serveConfigurations": {
     "default": {
-      "pageUrl": "https://agarb.sharepoint.com/sites/dev2/SitePages/Home.aspx",
+      "pageUrl": "https://agarb.sharepoint.com/sites/dev2/_layouts/15/viewlsts.aspx?view=14",
       "customActions": {
         "b54969ee-5581-4ad9-a109-74a79ac4a580": {
           "location": "ClientSideExtension.ApplicationCustomizer",
@@ -18,7 +18,7 @@
       }
     },
     "viewCount": {
-      "pageUrl": "https://agarb.sharepoint.com/sites/dev2/SitePages/Home.aspx",
+      "pageUrl": "https://agarb.sharepoint.com/sites/dev2/_layouts/15/viewlsts.aspx?view=14",
       "customActions": {
         "b54969ee-5581-4ad9-a109-74a79ac4a580": {
           "location": "ClientSideExtension.ApplicationCustomizer",

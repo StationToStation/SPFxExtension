@@ -7,7 +7,7 @@
   "extensionType": "ApplicationCustomizer",
 
   // The "*" signifies that the version should be taken from the package.json
-  "version": "*",
+  "version": "0.0.1",
   "manifestVersion": 2,
 
   // If true, the component can only be installed on sites where Custom Script is allowed.

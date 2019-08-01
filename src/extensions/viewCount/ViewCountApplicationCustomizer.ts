@@ -19,7 +19,7 @@ export default class ViewCountApplicationCustomizer extends BaseApplicationCusto
   private pageURL =
     window.location.href.length < 100
       ? window.location.href
-      : window.location.href.slice(0, window.location.href.indexOf('?'));
+      : window.location.href.slice(0, window.location.href.indexOf("?"));
   @override
   public onInit(): Promise<void> {
     Log.info(LOG_SOURCE, `Initialized ${strings.Title}`);
@@ -121,26 +121,25 @@ export default class ViewCountApplicationCustomizer extends BaseApplicationCusto
   }
 
   private createControlButton(views: number, attempt: number) {
+    console.log(attempt);
     let container = document.querySelector(
       ".ms-OverflowSet.ms-CommandBar-primaryCommand"
     );
     let id: string;
-    if (
-      (!container || !container.querySelector(".ms-OverflowSet-item")) &&
-      attempt < 10
-    ) {
-      setTimeout(
-        (views, attempt) => this.createControlButton(views, attempt + 1),
-        1000
-      );
+    if (attempt < 10 && !container) {
+      setTimeout(() => this.createControlButton(views, attempt + 1), 500);
       return;
     }
     if (attempt === 10) {
       console.error(
-        `error(garbuz-spfx-extension-client-side-solution): can't find container's .ms-OverflowSet.ms-CommandBar-primaryCommand child`
+        `Error(garbuz-spfx-extension-client-side-solution): can't find container's .ms-OverflowSet.ms-CommandBar-primaryCommand child`
       );
       id = "-320";
     } else {
+      if (!container.querySelector(".ms-OverflowSet-item")) {
+        setTimeout(this.createControlButton(views, attempt + 1), 500);
+        return;
+      }
       const classes = container.querySelector(".ms-OverflowSet-item").classList;
       Array.prototype.forEach.call(classes, className => {
         if (className.indexOf("item-") !== -1) id = className.slice(4);
@@ -148,7 +147,7 @@ export default class ViewCountApplicationCustomizer extends BaseApplicationCusto
     }
     if (!container) {
       console.error(
-        `error(garbuz-spfx-extension-client-side-solution): can't find container .ms-OverflowSet.ms-CommandBar-primaryCommand`
+        `Error(garbuz-spfx-extension-client-side-solution): can't find container .ms-OverflowSet.ms-CommandBar-primaryCommand`
       );
       container = document.querySelector("ms-CommandBar");
       if (!container) return;
